@@ -1,6 +1,11 @@
 package pe.edu.upc.schedule.customer.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.ValidationException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,119 +19,111 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.schedule.customer.domain.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import pe.edu.upc.schedule.customer.mapping.UserMapper;
+import pe.edu.upc.schedule.customer.resource.CreateUserResource;
+import pe.edu.upc.schedule.customer.resource.UserResource;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
+@Tag(name = "users", description = "the user API")
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
+
 public class UserController {
     private final UserService userService;
+    private final UserMapper userMapper;
 
-
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    //POST
+    @Operation(
+            summary = "Add a new user " ,
+            description = "Add a new user",
+            operationId = "addUser",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "201",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = UserResource.class)
+                            )
+                    ),
+                    @ApiResponse (
+                            responseCode = "400",
+                            description = "Bad Request",
+                            content = @Content (
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    )
+            }
+    )
+    @PostMapping("authenticate")
+    public ResponseEntity<UserResource> save(@RequestBody CreateUserResource resource){
+        return new ResponseEntity<>(
+                userMapper.toResource(userService.createUser(userMapper.toEntity(resource))),
+                HttpStatus.CREATED);
     }
 
+    //GET
+    @Operation(
+            summary = "Get user details by ID",
+            description = "Retrieve user details by providing the user ID",
+            operationId = "getUserById",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successful operation",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = UserResource.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    )
+            }
+    )
+    @GetMapping
+    public List<User> getAllUsers(){
+        return userService.fetchAll();
+    }
 
-    @PostMapping("/user/authenticate")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
-
-        pe.edu.upc.schedule.customer.domain.model.entities.User user = userService.getUserByUsernameAndPassword(username, password);
-
-        if (user != null) {
-            Map<String, String> response = new HashMap<>();
-            response.put("id", String.valueOf(user.getId()));
-            response.put("username", user.getUsername());
-            response.put("password", user.getPassword());
-
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-    }
-    @GetMapping("/users")
-    public List<pe.edu.upc.schedule.customer.domain.model.entities.User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-    @GetMapping("/users/{id}")
-    public pe.edu.upc.schedule.customer.domain.model.entities.User getUserById(@PathVariable int id) {
-        return userService.getUserById(id);
-    }
-    @PostMapping("/users")
-    @Transactional
-    public pe.edu.upc.schedule.customer.domain.model.entities.User createUser(@RequestBody pe.edu.upc.schedule.customer.domain.model.entities.User user) {
-        validateUser(user);
-        return userService.createUser(user);
-    }
-    @PutMapping("users/{id}")
-    @Transactional
-    public pe.edu.upc.schedule.customer.domain.model.entities.User updateUser(@PathVariable int id, @RequestBody pe.edu.upc.schedule.customer.domain.model.entities.User updatedUser) {
-        validateUser(updatedUser);
-        return userService.updateUser(id, updatedUser);
-    }
+    //DELETE
+    @Operation(
+            summary = "Delete user by ID",
+            description = "Delete user details by providing the user ID",
+            operationId = "deleteUserById",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "204",
+                            description = "User deleted successfully"
+                    ),
+                    @ApiResponse(
+                            responseCode = "404",
+                            description = "User not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = RuntimeException.class)
+                            )
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
-    @Transactional
-    public void deleteUser(@PathVariable int id) {
+    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable int id){
         userService.deleteUser(id);
-    }
-    // User Post Validation
-    public void validateUser(pe.edu.upc.schedule.customer.domain.model.entities.User user) {
-        // Validate username, password, name, lastname, email and phone
-
-        // Username Validation
-        if (user.getUsername() == null || user.getUsername().trim().isEmpty()) {
-            throw new ValidationException("Username is required");
-        }
-        if (user.getUsername().length()>30) {
-            throw new ValidationException("Username must not be more than 30 characters");
-        }
-
-        // Password Validation
-        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
-            throw new ValidationException("Password is required");
-        }
-        if (user.getPassword().length()>30) {
-            throw new ValidationException("Password must not be more than 30 characters");
-        }
-
-        // Name Validation
-        if (user.getName() == null || user.getName().trim().isEmpty()) {
-            throw new ValidationException("Name is required");
-        }
-        if (user.getName().length()>30) {
-            throw new ValidationException("Name must not be more than 30 characters");
-        }
-
-        // Lastname Validation
-        if (user.getLastname() == null || user.getLastname().trim().isEmpty()) {
-            throw new ValidationException("Lastname is required");
-        }
-        if (user.getLastname().length()>30) {
-            throw new ValidationException("Lastname must not be more than 30 characters");
-        }
-
-        // Email Validation
-        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
-            throw new ValidationException("Email is required");
-        }
-        if (user.getEmail().length()>50) {
-            throw new ValidationException("Email must not be more than 50 characters");
-        }
-
-        // Phone Validation
-        if (user.getPhone() == null || user.getPhone().trim().isEmpty()) {
-            throw new ValidationException("Phone is required");
-        }
-        if (user.getPhone().length()>9) {
-            throw new ValidationException("Phone must not be more than 9 characters");
-        }
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(response);
     }
 
 }

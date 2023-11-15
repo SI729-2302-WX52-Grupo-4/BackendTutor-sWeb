@@ -1,11 +1,17 @@
 package pe.edu.upc.schedule.customer.domain.model.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.xml.transform.Source;
+import java.sql.Date;
 import java.util.List;
 
 @Data
@@ -17,24 +23,39 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @Column(name = "username", nullable = false, length = 30)
-    private String username;
+    //nombre de usuario
+    @NotNull
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "first_name", nullable = false, length = 50)
+    private String firstName;
 
-    @Column(name = "password", nullable = false, length = 30)
-    private String password;
-
-    @Column(name = "name", nullable = false, length = 30)
-    private String name;
-
-    @Column(name = "lastname", nullable = false, length = 30)
+    //apellido de usuario
+    @NotNull
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastname;
 
-    @Column(name = "email", nullable = false, length = 50)
-    private String email;
+    // fecha de nacimiento del usuario
+    @DateTimeFormat(pattern = "yyyy-MM-dd") //numero "fecha"
+    @Column(name = "birth_date")
+    private Date birthDate;
 
-    @Column(name = "phone", nullable = false, length = 9)
-    private String phone;
+    //correo del usuario
+    @NotNull
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "email_address", nullable = false, length = 50)
+    private String emailAddress;
+
+    //contraseña del usuario
+    @NotNull
+    @NotBlank
+    @Size(max = 30)
+    @Column(name = "password", nullable = false, length = 30)
+    private String password;
 
 }
