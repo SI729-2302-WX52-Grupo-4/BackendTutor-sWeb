@@ -13,5 +13,5 @@ public interface UserService {
     User createUser(User user);//POST
    // User updateUser(int id, User updatedUser);//PUT
     void deleteUser(int id);//DELETE
-    //User getUserByUsernameAndPassword(String username, String password);
+    User findMyCredential(String emailAddress, String password);
 }

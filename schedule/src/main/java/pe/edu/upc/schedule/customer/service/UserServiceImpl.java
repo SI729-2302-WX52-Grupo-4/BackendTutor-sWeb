@@ -16,22 +16,28 @@ import java.util.Set;
 
 @AllArgsConstructor
 @Service
-public class StudentServiceImpl implements UserService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final Validator validator;
 
-    //GET
+    // Autenticación SET-----
+    @Transactional(readOnly = true)
+    @Override
+    public User findMyCredential(String email, String password) {
+        return userRepository.findByEmailAddressAndPassword(email, password);
+    }
+
+    //GET------
     @Transactional(readOnly = true)
     @Override
     public List<User> fetchAll() {
         return userRepository.findAll();
     }
 
-    //SET
+    //SET--------
     @Transactional
     @Override
-    //SET
     public User createUser(User user) {
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         if(violations.isEmpty()) {
@@ -40,10 +46,14 @@ public class StudentServiceImpl implements UserService {
         throw new ResourceValidationException("Reservation", violations);
     }
 
-    //DELETE
+    //DELETE---------
     @Transactional
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
+
+
+
+
 }
