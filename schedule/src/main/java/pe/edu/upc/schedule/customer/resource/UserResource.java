@@ -2,6 +2,8 @@ package pe.edu.upc.schedule.customer.resource;
 
 import lombok.*;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @With

@@ -40,10 +40,8 @@ public class User {
     private String lastname;
 
     // fecha de nacimiento del usuario
-    @NotNull
-    @NotBlank
-    @Size(max = 50)
-    @Column(name = "birth_date", nullable = false, length = 50)
+    @DateTimeFormat(pattern = "yyyy-MM-dd") //numero "fecha"
+    @Column(name = "birth_date")
     private String birthDate;
 
     //correo del usuario
