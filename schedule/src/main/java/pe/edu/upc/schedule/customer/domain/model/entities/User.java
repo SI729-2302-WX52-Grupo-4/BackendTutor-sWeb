@@ -43,7 +43,7 @@ public class User {
     // fecha de nacimiento del usuario
     @DateTimeFormat(pattern = "yyyy-MM-dd") //numero "fecha"
     @Column(name = "birth_date")
-    private Date birthDate;
+    private String birthDate;
 
     //correo del usuario
     @NotNull
