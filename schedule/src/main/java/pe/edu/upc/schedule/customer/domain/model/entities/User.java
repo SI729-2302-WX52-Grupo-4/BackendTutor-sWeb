@@ -39,6 +39,7 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastname;
 
+    
     // fecha de nacimiento del usuario
     @NotNull
     @NotBlank
