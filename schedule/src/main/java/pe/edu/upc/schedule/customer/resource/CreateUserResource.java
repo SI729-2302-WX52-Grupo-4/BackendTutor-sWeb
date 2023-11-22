@@ -25,7 +25,9 @@ public class CreateUserResource {
     private String lastname;
 
     @Past
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull(message = "birthDate no debe ser nulo")
+    @NotBlank(message = "birthDate no debe estar vacío")
+    @Size(max = 50, message = "birthDate no debe exceder los 50 caracteres")
     private String birthDate;
 
     @NotNull(message = "emailAddress no debe ser nulo")
