@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final Validator validator;
 
-    // Autenticación SET-----
+    // Autenticación POST-----
     @Transactional(readOnly = true)
     @Override
     public User findMyCredential(String email, String password) {
@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    //SET--------
+    //POST--------
     @Transactional
     @Override
     public User createUser(User user) {

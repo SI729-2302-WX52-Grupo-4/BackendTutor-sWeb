@@ -121,7 +121,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    //PUT Authentication------------
+    //POST Authentication------------
     @Operation(
             summary = "User authentication",
             description = "Authenticate a user by providing email and password",
