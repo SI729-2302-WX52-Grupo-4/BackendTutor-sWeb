@@ -4,9 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "profesores")
 public class Profesor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -45,4 +55,11 @@ public class Profesor {
     @Size(max = 500)
     @Column(name = "image", nullable = false, length = 500)
     private String image;
+
+    //nombre de profesor
+    @NotNull
+    @NotBlank
+    @Size(max = 50)
+    @Column(name = "clase", nullable = false, length = 50)
+    private String clase;
 }

@@ -3,7 +3,13 @@ package pe.edu.upc.schedule.customer.resource;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
+@Getter
+@Setter
+@With
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateProfesorResource {
     @NotNull(message = "name no debe ser nulo")
     @NotBlank(message = "name no debe de estar vacio")
@@ -29,4 +35,9 @@ public class CreateProfesorResource {
     @NotBlank(message = "image no debe de estar vacio")
     @Size(max = 500, message = "image no debe de exceder los 500 caracteres")
     private String image;
+
+    @NotNull(message = "clase no debe ser nulo")
+    @NotBlank(message = "clase no debe de estar vacio")
+    @Size(max = 50, message = "clase no debe de exceder los 50 caracteres")
+    private String clase;
 }

@@ -15,5 +15,5 @@ public class ProfesorResource {
     private String course;
     private String description;
     private String image;
-
+    private String clase;
 }

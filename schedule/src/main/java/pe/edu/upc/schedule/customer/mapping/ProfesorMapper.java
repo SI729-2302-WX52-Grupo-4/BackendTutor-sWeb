@@ -12,6 +12,7 @@ public class ProfesorMapper implements Serializable {
 
     @Autowired
     EnhancedModelMapper mapper;
+
     public Profesor toEntity(CreateProfesorResource resource){
         return  this.mapper.map(resource, Profesor.class);
     }
