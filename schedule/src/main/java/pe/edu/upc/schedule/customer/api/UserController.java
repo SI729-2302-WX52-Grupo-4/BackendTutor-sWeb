@@ -173,5 +173,4 @@ public class UserController {
                 userMapper.toResource(user),
                 HttpStatus.OK);
     }
-
 }

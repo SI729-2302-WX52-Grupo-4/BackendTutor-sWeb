@@ -39,6 +39,7 @@ public class User {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastname;
 
+    
     // fecha de nacimiento del usuario
     @DateTimeFormat(pattern = "yyyy-MM-dd") //numero "fecha"
     @Column(name = "birth_date")
