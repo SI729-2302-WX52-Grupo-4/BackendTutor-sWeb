@@ -24,11 +24,11 @@ public class VideoConferenceResource {
     @JsonProperty("CreatorName")
     private String CreatorName;
     @JsonProperty("VideoConferenceDate")
-    private LocalDate VideoConferenceDate;
+    private String VideoConferenceDate;
     @JsonProperty("VideoConferenceTime")
-    private LocalTime VideoConferenceTime;
+    private String VideoConferenceTime;
     @JsonProperty("CreationConferenceDate")
-    private LocalDateTime CreationConferenceDate;
+    private String CreationConferenceDate;
 
 
 }

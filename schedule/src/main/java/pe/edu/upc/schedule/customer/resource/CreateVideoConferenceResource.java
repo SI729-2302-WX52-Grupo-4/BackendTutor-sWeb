@@ -1,15 +1,10 @@
 package pe.edu.upc.schedule.customer.resource;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -30,9 +25,9 @@ public class CreateVideoConferenceResource {
     private String CreatorName;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd") //año - mes- día
-    private LocalDate VideoConferenceDate;
+    private String VideoConferenceDate;
 
     @DateTimeFormat(pattern = "HH:mm") //Hora - minutos - segundos
-    private LocalTime VideoConferenceTime;
+    private String VideoConferenceTime;
 
 }

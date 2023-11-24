@@ -29,7 +29,7 @@ spring:
     #    JDBC : SGDB :// HOST : PORT / DB
     url: jdbc:postgresql://localhost:5432/Tutor'sMe
     username: postgres
-    password: 123456 #Necesario cambiar contraseña a la de usted
+    password: alessandro #Necesario cambiar contraseña a la de usted
   jpa:
     database: postgresql
     hibernate:

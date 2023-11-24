@@ -1,6 +1,5 @@
 package pe.edu.upc.schedule.customer.domain.model.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,12 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Date;
 
 @Data
 @Builder
@@ -46,17 +39,17 @@ public class VideoConference {
     //fecha de inicio de la sesion
     @DateTimeFormat(pattern = "yyyy-MM-dd") //año - mes- día
     @Column(name = "video_conference_date")
-    private LocalDate VideoConferenceDate;
+    private String VideoConferenceDate;
 
     //Hora de cuando se iniciará la session de la session
     @DateTimeFormat(pattern = "HH:mm") //Hora - minutos - segundos
     @Column(name = "video_conference_time")
-    private LocalTime VideoConferenceTime;
+    private String VideoConferenceTime;
 
     //Fecha y hora de la creation de la session (esto no se verá en el front)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "creation_conference_date")
-    private LocalDateTime CreationConferenceDate;
+    private String CreationConferenceDate;
 
     //-------------------------------------
 
