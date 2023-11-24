@@ -36,7 +36,7 @@ public class VideoConferenceServiceImpl implements VideoConferenceService {
     public VideoConference createVideoConference(VideoConference videoConference) {
         Set<ConstraintViolation<VideoConference>> violations = validator.validate(videoConference);
         if (violations.isEmpty()) {
-            videoConference.setCreationConferenceDate(LocalDateTime.now().withNano(0));
+            videoConference.setCreationConferenceDate(videoConference.getVideoConferenceDate()+" " + videoConference.getVideoConferenceTime());
             return videoconferenceRepositoryRepository.save(videoConference);
         }
         String errorMessage = "Hubo problemas al crear la sesión, inténtelo de nuevo.";

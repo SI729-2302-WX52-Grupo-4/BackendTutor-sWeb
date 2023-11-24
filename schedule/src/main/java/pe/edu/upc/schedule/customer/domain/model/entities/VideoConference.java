@@ -46,17 +46,17 @@ public class VideoConference {
     //fecha de inicio de la sesion
     @DateTimeFormat(pattern = "yyyy-MM-dd") //año - mes- día
     @Column(name = "video_conference_date")
-    private LocalDate VideoConferenceDate;
+    private String VideoConferenceDate;
 
     //Hora de cuando se iniciará la session de la session
     @DateTimeFormat(pattern = "HH:mm") //Hora - minutos - segundos
     @Column(name = "video_conference_time")
-    private LocalTime VideoConferenceTime;
+    private String VideoConferenceTime;
 
     //Fecha y hora de la creation de la session (esto no se verá en el front)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "creation_conference_date")
-    private LocalDateTime CreationConferenceDate;
+    private String CreationConferenceDate;
 
     //-------------------------------------
 

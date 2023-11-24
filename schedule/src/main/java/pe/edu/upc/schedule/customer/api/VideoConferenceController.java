@@ -44,7 +44,7 @@ public class VideoConferenceController {
     }
 
     //Get------------------------
-    @GetMapping("videoconferences")
+    @GetMapping("videoconference")
     public List<VideoConference> fetchAll(){
         return videoConferenceService.fetchAllConference();
     }
