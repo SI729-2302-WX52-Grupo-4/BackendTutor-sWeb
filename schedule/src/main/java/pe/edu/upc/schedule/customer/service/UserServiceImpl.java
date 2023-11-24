@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upc.schedule.customer.domain.model.entities.User;
 import pe.edu.upc.schedule.customer.domain.persistence.UserRepository;
 import pe.edu.upc.schedule.customer.domain.service.UserService;
+import pe.edu.upc.schedule.shared.exception.FetchNotFoundException;
 import pe.edu.upc.schedule.shared.exception.ResourceValidationException;
 
 
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final Validator validator;
 
-    // Autenticación SET-----
+    // Autenticación POST-----
     @Transactional(readOnly = true)
     @Override
     public User findMyCredential(String email, String password) {
@@ -35,7 +36,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    //SET--------
+
+    //POST--------
     @Transactional
     @Override
     public User createUser(User user) {
@@ -51,6 +53,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User getUserByIdWithDetails(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new FetchNotFoundException("User", "id", id.toString()));
     }
 
 

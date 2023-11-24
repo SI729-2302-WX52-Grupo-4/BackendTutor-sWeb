@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.schedule.customer.domain.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import pe.edu.upc.schedule.customer.mapping.UserMapper;
+import pe.edu.upc.schedule.customer.resource.CreateUserLoginResource;
 import pe.edu.upc.schedule.customer.resource.CreateUserResource;
 import pe.edu.upc.schedule.customer.resource.UserLoginResource;
 import pe.edu.upc.schedule.customer.resource.UserResource;
+import pe.edu.upc.schedule.shared.exception.FetchNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.Map;
 @Tag(name = "users", description = "the user API")
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 
 public class UserController {
     private final UserService userService;
@@ -57,7 +59,7 @@ public class UserController {
                     )
             }
     )
-    @PostMapping("user/new")
+    @PostMapping("new")
     public ResponseEntity<UserResource> save(@RequestBody CreateUserResource resource){
         return new ResponseEntity<>(
                 userMapper.toResource(userService.createUser(userMapper.toEntity(resource))),
@@ -88,6 +90,7 @@ public class UserController {
                     )
             }
     )
+
     @GetMapping("users")
     public List<User> getAllUsers(){
         return userService.fetchAll();
@@ -121,7 +124,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    //PUT Authentication------------
+    //POST Authentication------------
     @Operation(
             summary = "User authentication",
             description = "Authenticate a user by providing email and password",
@@ -147,25 +150,27 @@ public class UserController {
             }
     )
     @PostMapping("login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
-        String email = credentials.get("email");
-        String password = credentials.get("password");
+    public ResponseEntity<UserResource> login(@RequestBody CreateUserLoginResource resource) {
+        String email = resource.getEmailAddress();
+        String password = resource.getPassword();
 
         User user = userService.findMyCredential(email, password);
 
         if (user != null) {
-            Map<String, String> response = new HashMap<>();
-            response.put("id", String.valueOf(user.getId()));
-            response.put("firstName", user.getFirstName());
-            response.put("lastName", user.getLastname());
-            response.put("email", user.getEmailAddress());
-
-            return ResponseEntity.ok(response);
+            return new ResponseEntity<>(
+                    userMapper.toResource(user),
+                    HttpStatus.CREATED);
         } else {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Authentication failed: User not registered");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+            throw new FetchNotFoundException("User", "emailAddress", email);
         }
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResource> getUserById(@PathVariable Integer id) {
+        User user = userService.getUserByIdWithDetails(id);
+        return new ResponseEntity<>(
+                userMapper.toResource(user),
+                HttpStatus.OK);
+    }
 }

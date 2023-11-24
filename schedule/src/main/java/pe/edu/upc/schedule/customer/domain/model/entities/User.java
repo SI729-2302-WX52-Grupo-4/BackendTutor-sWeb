@@ -59,4 +59,7 @@ public class User {
     @Column(name = "password", nullable = false, length = 30)
     private String password;
 
+
+    //--------------------------------
+
 }

@@ -13,6 +13,18 @@ public class MappingConfiguration {
         return new UserMapper();
     }
 
+    @Bean
+    public VideoConferenceMapper videoConferenceMapper() {
+
+        return new VideoConferenceMapper();
+    }
+
+    @Bean
+    public ProfesorMapper ProfesorMapper() {
+
+        return new ProfesorMapper();
+    }
+
 
 
 }
