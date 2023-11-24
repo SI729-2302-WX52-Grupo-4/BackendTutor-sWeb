@@ -90,6 +90,7 @@ public class UserController {
                     )
             }
     )
+
     @GetMapping("users")
     public List<User> getAllUsers(){
         return userService.fetchAll();
@@ -163,4 +164,14 @@ public class UserController {
             throw new FetchNotFoundException("User", "emailAddress", email);
         }
     }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResource> getUserById(@PathVariable Integer id) {
+        User user = userService.getUserByIdWithDetails(id);
+        return new ResponseEntity<>(
+                userMapper.toResource(user),
+                HttpStatus.OK);
+    }
+
 }

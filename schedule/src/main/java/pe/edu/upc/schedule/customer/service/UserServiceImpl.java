@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upc.schedule.customer.domain.model.entities.User;
 import pe.edu.upc.schedule.customer.domain.persistence.UserRepository;
 import pe.edu.upc.schedule.customer.domain.service.UserService;
+import pe.edu.upc.schedule.shared.exception.FetchNotFoundException;
 import pe.edu.upc.schedule.shared.exception.ResourceValidationException;
 
 
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
+
     //POST--------
     @Transactional
     @Override
@@ -51,6 +53,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public User getUserByIdWithDetails(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new FetchNotFoundException("User", "id", id.toString()));
     }
 
 
